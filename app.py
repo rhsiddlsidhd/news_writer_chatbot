@@ -1,21 +1,12 @@
-import streamlit as st
-from chain import news_chain
+from langchain_core.messages import AIMessageChunk, SystemMessage
+from graph import graph
+from prompts import SYSTEM_PROMPT
 
-st.title("News Writer")
-st.caption("주제를 입력하면 뉴스 기사를 자동으로 작성합니다.")
+topic = "서울 월드컵 경기장 잔디 문제"
 
-topic = st.text_area("주제 입력", placeholder="예) 서울시 대중교통 요금 인상 계획", height=120)
+inputs = [SystemMessage(content=SYSTEM_PROMPT.format(topic=topic))]
 
-if st.button("기사 생성", disabled=not topic.strip()):
-    with st.spinner("기사 작성 중..."):
-        result = news_chain.invoke({"topic": topic})
-        st.session_state["article"] = result.content
+for msg, metadata in graph.stream({'messages':inputs},stream_mode='messages'):
+    if isinstance(msg,AIMessageChunk):
+        print(msg.content,end='')
 
-if "article" in st.session_state:
-    lines = st.session_state["article"].split("\n", 2)
-    headline = lines[0].replace("헤드라인: ", "").strip()
-    body = lines[2].strip() if len(lines) > 2 else ""
-
-    st.divider()
-    st.subheader(headline)
-    st.write(body)
