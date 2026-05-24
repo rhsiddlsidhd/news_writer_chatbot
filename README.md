@@ -1,12 +1,13 @@
 # News Writer Chatbot
 
-주제를 입력하면 GPT-4.1-mini가 뉴스 기사(헤드라인 + 본문)를 자동으로 작성합니다.
+주제를 입력하면 GPT-4.1-mini가 웹 검색을 통해 최신 정보를 수집하고 뉴스 기사(헤드라인 + 본문)를 자동으로 작성합니다.
 
 ## 기술 스택
 
 - **LLM**: GPT-4.1-mini (OpenAI)
-- **Framework**: LangChain
-- **UI**: Streamlit
+- **Framework**: LangChain + LangGraph
+- **Tools**: DuckDuckGo 웹 검색, 현재 시각 조회
+- **UI**: Streamlit (스트리밍 출력)
 - **패키지 관리**: uv
 
 ## 실행 방법
@@ -26,7 +27,10 @@ uv run streamlit run app.py
 
 ```
 news_writer_chatbot/
-├── app.py        # Streamlit UI
-├── chain.py      # LangChain 체인
-└── prompts.py    # 프롬프트 템플릿
+├── app.py        # Streamlit UI 및 스트리밍 실행
+├── graph.py      # LangGraph 그래프 정의 및 라우팅
+├── chain.py      # LLM 및 generate 노드
+├── state.py      # 그래프 상태 정의
+├── tools.py      # 웹 검색 / 현재 시각 도구
+└── prompts.py    # 시스템 프롬프트 템플릿
 ```
