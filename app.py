@@ -7,7 +7,7 @@ import streamlit as st
 load_dotenv()
 
 
-@st.cache_resource
+@st.cache_resource(show_spinner=False)
 def load_graph():
     from graph import graph
     return graph
