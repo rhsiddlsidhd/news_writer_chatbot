@@ -26,7 +26,7 @@ tool_node = ToolNode(tools=tools)
 graph_builder.add_node("tools", tool_node)
 
 graph_builder.add_edge(START, "generate")
-graph_builder.add_conditional_edges("generate", route_tools,{'tools':'tools',END:END})
+graph_builder.add_conditional_edges("generate", route_tools, {'tools': 'tools', '__end__': END})
 graph_builder.add_edge("tools", "generate")
 
 graph = graph_builder.compile()
