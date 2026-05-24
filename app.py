@@ -15,7 +15,8 @@ def load_graph():
 def stream_article(topic: str):
     graph = load_graph()
     inputs = [SystemMessage(content=SYSTEM_PROMPT.format(topic=topic))]
-    for msg, _ in graph.stream({'messages': inputs}, stream_mode='messages'):
+    config = {"recursion_limit": 10}
+    for msg, _ in graph.stream({'messages': inputs}, config=config, stream_mode='messages'):
         if isinstance(msg, AIMessageChunk) and msg.content:
             yield msg.content
 
@@ -28,7 +29,5 @@ if st.button("기사 생성", type="primary"):
     if not topic.strip():
         st.warning("주제를 입력해주세요.")
     else:
-        st.session_state["last_topic"] = topic
         with st.spinner("기사를 작성하는 중입니다..."):
-            article = st.write_stream(stream_article(topic))
-        st.session_state["last_article"] = article
+            st.write_stream(stream_article(topic))

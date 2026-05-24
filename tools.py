@@ -20,22 +20,12 @@ def get_web_search(query: str, search_period: str = 'w') -> str:
         #region='kr-kr',
         time=search_period
     )
-    print('\n==WEB SEARCH==')
-
-    print(query)
-    print(search_period)
-
     search = DuckDuckGoSearchResults(
         api_wrapper=wrapper,
-        results_separator =';\n'
+        results_separator=';\n'
     )
 
-    searched = search.invoke(query)
-
-    for i , result in enumerate(searched.split(';\n')):
-        print(f'{i+1} . {result}')
-
-    return searched
+    return search.invoke(query)
     
 @tool
 def get_current_time(timezone: str, location: str) -> str:
